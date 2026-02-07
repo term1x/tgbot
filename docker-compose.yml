@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tgbot
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/tgbot
+      BOT_TOKEN: ${BOT_TOKEN}
+      JWT_SECRET: ${JWT_SECRET}
+      THREE_X_UI_BASE_URL: ${THREE_X_UI_BASE_URL}
+      THREE_X_UI_USERNAME: ${THREE_X_UI_USERNAME}
+      THREE_X_UI_PASSWORD: ${THREE_X_UI_PASSWORD}
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    environment:
+      BOT_TOKEN: ${BOT_TOKEN}
+      WEB_APP_URL: ${WEB_APP_URL}
+    depends_on:
+      - backend
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:

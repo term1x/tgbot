@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VPN Mini App</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>VPN Dashboard</h1>
+        <nav>
+          <button data-view="dashboard">Dashboard</button>
+          <button data-view="devices">Devices</button>
+          <button data-view="topup">Top Up</button>
+        </nav>
+      </header>
+
+      <main>
+        <section id="dashboard" class="view active">
+          <h2>Account</h2>
+          <p><strong>Username:</strong> <span id="username">-</span></p>
+          <p><strong>Balance:</strong> <span id="balance">0</span></p>
+          <p><strong>Devices:</strong> <span id="device-count">0</span></p>
+        </section>
+
+        <section id="devices" class="view">
+          <h2>Devices</h2>
+          <ul id="device-list"></ul>
+          <button id="add-device">Add device</button>
+          <button id="disable-device">Disable device</button>
+        </section>
+
+        <section id="device-details" class="view">
+          <h2>Device Details</h2>
+          <p><strong>VLESS Link:</strong></p>
+          <p id="vless-link"></p>
+          <canvas id="qr"></canvas>
+        </section>
+
+        <section id="topup" class="view">
+          <h2>Top up balance</h2>
+          <input id="topup-amount" type="number" min="1" placeholder="Amount" />
+          <button id="topup-button">Top Up</button>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
